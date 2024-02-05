@@ -1,5 +1,5 @@
 <?php
-
+// Function for connecting to the database
 function check_database($tableName) {
     $servername = "localhost";
     $username = "root";
@@ -15,6 +15,7 @@ function check_database($tableName) {
     return $conn;
 }
 
+// Function checking if the table exists 
 function table_exists($tableName) {
     $conn = check_database($tableName);
     $tableExistsQuery = "SHOW TABLES LIKE '$tableName'";
@@ -23,6 +24,7 @@ function table_exists($tableName) {
     return $tableExistsResult->num_rows > 0;
 }
 
+// Function to add entries
 function add_to_table($tableName, $content){
     if(table_exists($tableName)){
         $conn = check_database($tableName);
@@ -35,15 +37,15 @@ function add_to_table($tableName, $content){
         $insertQuery = "INSERT INTO $tableName (zone_number, price) VALUES $values";
     
         if ($conn->query($insertQuery) === true) {
-            echo "Dane zostały dodane do bazy danych.<br>";
+            echo "Data has been added to the database.<br>";
         } else {
-            echo "Błąd dodawania danych: " . $conn->error . "<br>";
+            echo "Error adding data: " . $conn->error . "<br>";
         }
     } else {
         return false;
     }
 }
-
+// Function getting data from the database table (all or specific)
 function fetch_data($tableName, $number = 'all') {
     if(table_exists($tableName)){
         $conn = check_database($tableName);
@@ -65,7 +67,7 @@ function fetch_data($tableName, $number = 'all') {
             }
             return $data;
         } else {
-            echo "Błąd zapytania: " . $conn->error;
+            echo "Query error: " . $conn->error;
             return false;
         }
     } else {
